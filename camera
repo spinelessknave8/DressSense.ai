@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform } from 'react-native';
+import { TouchableOpacity, Text, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
@@ -19,7 +20,7 @@ export default function ImagePickerExample() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [5, 3],
       quality: 1,
       maxWidth: 400,
       maxHeight: 400
@@ -39,19 +40,58 @@ export default function ImagePickerExample() {
     }
   };
 
-  return (
-  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end' }}>
-    {cameraPermission && (
-      <Camera
-        style={{ flex: 1, width: '100%' }}
-        type={Camera.Constants.Type.back}
-        ref={(ref) => setCamera(ref)}
-      />
-    )}
-    {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-    <Button title="Pick an image from camera roll" onPress={pickImage} />
-    <Button title="Take a photo" onPress={takePhoto} />
-  </View>
-);
+  const styles = StyleSheet.create({
+  buttonBox: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: 'black',
+    width: 70, // Adjust the width as needed for the text button
+    height: 70, // Make height same as width for the camera icon button, adjust for the text button
+    alignSelf: 'center',
+  },
+  buttonBox2:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: 'black',
+    width: 300, 
+    height: 40, 
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    padding: 10, 
+    textAlign: 'center', 
 
+  },
+  icon: {
+    color: 'white',
+  },
+});
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end' }}>
+      {cameraPermission && (
+        <Camera
+          style={{ flex: 1, width: '100%' }}
+          type={Camera.Constants.Type.back}
+          ref={(ref) => setCamera(ref)}
+        />
+      )}
+      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+      <TouchableOpacity style={styles.buttonBox} onPress={takePhoto}>
+        <Ionicons name="camera" size={32} style={styles.icon} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonBox2} onPress={pickImage}>
+        <Text style={styles.buttonText}>Choose an image from your photo gallery</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
