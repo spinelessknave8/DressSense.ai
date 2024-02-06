@@ -338,27 +338,20 @@ def colored_text_input(placeholder, key, color="white"):
     )
     value = st.text_input("", placeholder=placeholder, key=key)
     return value
+# Define your CSS
 custom_css = """
 <style>
-input[data-testid="stTextInput"]::placeholder {
-    color: white;
-    opacity: 1; /* For Firefox */
+/* Add your custom CSS styles here */
+body, .stApp, .css-1d391kg, .css-18e3th9, .css-1e5imcs, .main .block-container {
+    background-color: white !important;
+    color: black !important;
 }
-
-input[data-testid="stTextInput"] {
-    color: white !important;
-    background-color: #ffd700; /* Golden background */
-    border-color: #ffd700; /* Golden border, if needed */
-}
-
-/* This ensures that the text color remains white when the input is focused (i.e., clicked on) */
-input[data-testid="stTextInput"]:focus {
-    color: white;
-    background-color: #ffd700;
-    border-color: #ffd700;
-}
+/* Other styles... */
 </style>
 """
+
+# Use the function to inject CSS into the app
+st.markdown(custom_css, unsafe_allow_html=True)
 
 def outfit_creator_page():
     st.subheader("Outfit Creator")
@@ -405,10 +398,6 @@ def outfit_creator_page():
                 st.write("No outfit recommendations to display.")
         else:
             st.write("Wardrobe needs more clothes")
-
-
-
-
 
 # Function to create a page layout
 def page_layout(page_name):
