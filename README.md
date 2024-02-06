@@ -13,4 +13,5 @@ Despite our lack of experience, we managed to make a full-fledged full-stack pro
 We learned about various software engineering frameworks as well as technologies during this project. We learned a significant amount about cloud based hosting services such as AWS, as well as libraries such as React that are suitable for front end.
 ## What's next for DressSense.ai
 We are planning to add several other features, and also explore the concept behind our project further as we believe it has extensive real-world context. More to come soon!
+## Flowchart of the different components
 ![DressSenseFlowChart](https://github.com/spinelessknave8/DressSense.ai/assets/128112149/e8217dec-0d88-4c63-8ab2-2baf921115b9)
