@@ -1,0 +1,41 @@
+body, .stApp, .css-1d391kg, .css-18e3th9, .css-1e5imcs, .main .block-container {
+    background-color: white !important;
+}
+
+/* styles.css content */
+/* Change background to white and font color to black */
+body, .stApp, .css-1d391kg, .css-18e3th9, .css-1e5imcs, .main .block-container {
+    background-color: white !important;
+    color: black !important;
+}
+
+/* Ensure all text elements have black color */
+h1, h2, h3, h4, h5, h6, p, .stTextInput>div>div>input, .st-bb, .st-bc, .st-be {
+    color: black !important;
+}
+
+/* Sidebar specific styling */
+.css-1d391kg {
+    background-color: white !important;
+    color: black !important;
+}
+
+/* Adjust input and slider colors */
+.stTextInput>div>div>input {
+    color: black !important;
+}
+
+.stSlider>div>div>div>div {
+    background-color: black !important;
+}
+
+/* Change button text color to white */
+button {
+    color: white !important;
+    background-color: #FF4B4B !important; /* Example background color for contrast */
+}
+
+/* Additional styles for buttons to ensure visibility */
+button:hover {
+    background-color: #FF0000 !important; /* Darker shade on hover for better UI */
+}
