@@ -6,12 +6,13 @@ import base64
 import requests
 from openai import OpenAI
 import psycopg2
+import aws_cdk as cdk
 
 db_host = os.environ['DB_HOST']
 db_user = os.environ['DB_USER']
 db_password = os.environ['DB_PASSWORD']
 
-api_key = "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"
+api_key = "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"
 weather_api = "0be641e1bbc1e83e986d8bb183d6a10c"
 
 client = OpenAI(api_key=api_key)
@@ -59,7 +60,10 @@ def outfit_rater_page():
     uploaded_file = st.file_uploader("Upload an image of your outfit for review", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-    base64_image = encode_image(image)
+    try:
+        base64_image = encode_image(image)
+    except:
+        return 
     headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {api_key}"
@@ -299,39 +303,108 @@ def split_reccomendation(recommendations):
     else:
         print("Not enough outfit recommendations found.")
         return None
+custom_css = """
+<style>
+input[type="text"]::placeholder {
+    color: white;
+    opacity: 1; /* Firefox */
+}
+
+input[type="text"] {
+    color: white;
+}
+</style>
+"""
+
+def local_css(file_name):
+    with open(file_name, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+def remote_css(url):
+    st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
+
+def colored_text_input(placeholder, key, color="white"):
+    st.markdown(
+        f"""
+        <style>
+            input[data-testid="stTextInput"]::placeholder {{
+                color: {color};
+            }}
+            input[data-testid="stTextInput"] {{
+                color: {color};
+            }}
+        </style>
+        """, unsafe_allow_html=True
+    )
+    value = st.text_input("", placeholder=placeholder, key=key)
+    return value
+custom_css = """
+<style>
+input[data-testid="stTextInput"]::placeholder {
+    color: white;
+    opacity: 1; /* For Firefox */
+}
+
+input[data-testid="stTextInput"] {
+    color: white !important;
+    background-color: #ffd700; /* Golden background */
+    border-color: #ffd700; /* Golden border, if needed */
+}
+
+/* This ensures that the text color remains white when the input is focused (i.e., clicked on) */
+input[data-testid="stTextInput"]:focus {
+    color: white;
+    background-color: #ffd700;
+    border-color: #ffd700;
+}
+</style>
+"""
 
 def outfit_creator_page():
     st.subheader("Outfit Creator")
-    weather_condition = fetch_weather(weather_api)
-    items = fetch_all_clothing_items()
-    if items:
-        recommendations = generate_outfit_recommendations(items, weather_condition)
-    else:
-        st.write("Wardrobe needs more clothes")
-    result = split_reccomendation(recommendations)
-    urls = []
+    # Inject custom CSS with unsafe_allow_html
+    st.markdown(custom_css, unsafe_allow_html=True)
     
-    if len(result) == 3:
-        for i in result:
-            response = client.images.generate(
-                model="dall-e-3",
-                prompt=i + "put these clothes on a fully shown maneuqin exactly as given in the description",
-                size="1024x1024",
-                quality="standard",
-                n=1,
-            )
-            urls.append(response.data[0].url)
-        if urls:
-            # Use Streamlit's columns to create a side-scrolling set of images.
-            cols = st.columns(len(urls), gap="small")
-            for idx, url in enumerate(urls):
-                with cols[idx]:
-                    st.image(url, use_column_width=True)
-            
+    # Use the text input now with the custom CSS applied
+    color_pref = st.text_input("Enter Color Preferences", key="color_pref")
+    occasion = st.text_input("Enter Occasion", key="occasion")
+    other_comments = st.text_input("Enter Any Other Comments", key="other_comments")
+    if color_pref and occasion and other_comments:
+
+        weather_condition = fetch_weather(weather_api)
+        items = fetch_all_clothing_items()
+        if items:
+            recommendations = generate_outfit_recommendations(items, weather_condition)
+            st.write(recommendations)
         else:
-            st.write("No outfit recommendations to display.")
-    else:
-        st.write("Wardrobe needs more clothes")
+            st.write("Wardrobe needs more clothes")
+        try:
+            result = split_reccomendation(recommendations)
+        except:
+            result = []
+        urls = []
+    
+        if len(result) == 3:
+            for i in result:
+                response = client.images.generate(
+                    model="dall-e-3",
+                    prompt=i + "put these clothes on a fully shown maneuqin exactly as given in the description",
+                    size="1024x1024",
+                    quality="standard",
+                    n=1,
+                )
+                urls.append(response.data[0].url)
+            if urls:
+            
+                cols = st.columns(len(urls), gap="small")
+                for idx, url in enumerate(urls):
+                    with cols[idx]:
+                        st.image(url, use_column_width=True)
+            
+            else:
+                st.write("No outfit recommendations to display.")
+        else:
+            st.write("Wardrobe needs more clothes")
 
 
 
