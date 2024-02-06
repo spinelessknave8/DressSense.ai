@@ -8,6 +8,11 @@ DressSense is revolutionary in the sense that it takes a completely fresh approa
 Essentially, DressSense is a personal stylist that aims to take in a user's preferences and suggest to them the most suitable outfit - based off their existing clothes - for their needs. Users will take a picture of the clothes in their wardrobe and the AI will generate permutations of fashionable, practical and unique outfits for them to wear. It helps them visualize outfits, get feedback, and even improve their dressing based off interactive feedback from the in-built chatbot.
 ## How we built it
 We used a multifaceted approach for the front-end. We built both a web application as well as a mobile application, to enhance convenience and extensibility for our users. For the backend, we made use of several APIs including Dall-e, Open AI, Google Calendar amongst many others in order to optimise the several functionalities our application offered. Rather than locally hosting the server, we hosted our backend on AWS so as to fully recreate the feel of a 'market-ready' application - after all, our goal is to build something that can actually be used.
+## How can you access DressSense.ai
+There are three ways which you can access DressSense.ai 
+Firstly, via the ExpoGo app on your phone.
+Secondly, via the web application Streamlit which is hosted on AWS.
+Lastly, you can also access Streamlit on the web application via your phone.
 ## Challenges we ran into
 The UI/UX was tedious to code at times, since we kept scrapping previous designs in favour of a more user-centric interface.  We also ran into a fair bit of hassle when trying to integrate the front-end and the backend since we are still inexperienced when it comes to full-stack development. Moreover, as we were constantly learning during the project, there were often times when we reached a roadblock. During these moments, a short walk (to the nearest convenience store) served as a great distraction and often resulted in us having coding epiphanies while doing completely unrelated tasks. 
 ## Accomplishments that we're proud of
